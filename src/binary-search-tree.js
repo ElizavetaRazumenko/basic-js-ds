@@ -22,165 +22,145 @@ class BinarySearchTree {
 
   root() {
     return this._root;
-    // return {
-    //   data: this._root,
-    // }
-    // //throw new NotImplementedError('Not implemented');
   }
 
   add(data) {
-    //throw new NotImplementedError('Not implemented');
-    function addNewElement(elem, data) {
 
-      if (!elem) {
-        return new Node(data)
-      }
-  
-      if (elem.data === data) {
-        return elem;
-      }
-  
-      if (data < elem.data) {
-        elem.left = addNewElement(elem.left, data);
-      }
+    this._root = addWithin(this._root, data);
+   
+      function addWithin(node, value) {
+        if (!node) {
+          if (BinarySearchTree._root == null) {
+            BinarySearchTree._root = value;
+          }
+          return new Node(value);
 
-      if (data > elem.value) {
-        elem.right = addNewElement(elem.right, data);
-      } return elem;
-    }
-    
-    if (this._root) {
-      this._root = data;
-      return new Node(data)
-    }
+        }
 
-    this._root = addNewElement(this._root, data)
+        if (node.value === value) {
+          return node;
+        }
+
+        if (value < node.value) {
+          node.left = addWithin(node.left, value);
+        } else {
+          node.right = addWithin(node.right, value);
+        }
+
+        return node;
+      }
+                
   }
 
 
-  has(data) {
-    //throw new NotImplementedError('Not implemented');
-    function hasEmement(elem, data) {
-      if (!elem) {
+  has(value) {
+    return searchWithin(this._root, value);
+
+    function searchWithin(node, value) {
+      if (!node) {
         return false;
       }
 
-      if (elem.data === data) {
+      if (node.value === value) {
         return true;
       }
-      if (data < elem.data) {
-        return hasEmement(elem.left, data);
-      } else {
-        return hasEmement(elem.right, data);
-      }
+
+      return value < node.value ? 
+        searchWithin(node.left, value) : 
+        searchWithin(node.right, value);
     }
-    return hasEmement(this._root, data);
 
   }
 
 
-  find(data) {
-    //throw new NotImplementedError('Not implemented');
-    function findElement(elem, data) {
-      if (!elem) {
+  find(value) {
+    return searchWithin(this._root, value);
+
+    function searchWithin(node, value) {
+      if (!node) {
         return false;
       }
-      if (elem.data == data) {
-        return elem;
+
+      if (node.value === value) {
+        return node.value;
       }
 
-      if (data < elem.data) {
-        elem.left = findElement(elem.left, data); 
-      } else  {
-        elem.right = findElement(elem.right, data) 
-      }
-      
-    } 
-
-    this._root = findElement(this._root, data);
+      return value < node.value ? 
+        searchWithin(node.left, value) : 
+        searchWithin(node.right, value);
+    }
   }
 
-  remove(data) {
-    //throw new NotImplementedError('Not implemented');
-    function removeElement(elem, data) {
-      if (!elem) {
-        return null;
-      }
+  remove(value) {
+    this.root = removeNode(this._root, value);
 
-      if (data < elem.data) {
-        elem.left = removeElement(elem.left, data);
-        return elem;
-      } else if (elem.data < data) {
-        elem.right = removeElement(elem.right, data);
-        return elem;
-      } else {
-        if (!elem.left && !elem.right) {
+      function removeNode(node, value) {
+        if (!node) {
           return null;
-        } 
-
-        if (!elem.left) {
-          elem = elem.right;
-          return elem;
         }
 
-
-        if (!elem.right) {
-          elem = elem.left;
-          return elem;
-        }
-
-        let minElementRight = elem.right;
-
-          while (minElementRight.left) {
-            minElementRight = minElementRight.left;
+        if (value < node.value) {
+          node.left = removeNode(node.left, value);
+          return node;
+        } else if (node.value < value) {
+          node.right = removeNode(node.right, value);
+          return node;
+        } else {
+          // equal
+          if (!node.left && !node.right) {
+            return null;
           }
 
-          elem.data = minElementRight.value;
+          if (!node.left) {
+            node = node.right;
+            return node;
+          }
 
-          elem.right = removeElement(elem.right, minElementRight.data);
+          if (!node.right) {
+            node = node.left;
+            return node;
+          }
 
-          return elem;
+          let minFromRight = node.right;
+          while (minFromRight.left) {
+            minFromRight = minFromRight.left;
+          }
+          node.value = minFromRight.value;
+
+          node.right = removeNode(node.right, minFromRight.value);
+
+          return node;
         }
       }
-
-
-      this._root = removeElement(this._root, data);
 
   }
 
   min() {
-    //throw new NotImplementedError('Not implemented');
     if (!this._root) {
-
       return null;
-     }
-  
-        let elem = this._root;
-  
-  
-        while (elem.left) {
-          elem = elem.left;
-        }
-  
-      return elem.value;
+    }
+
+    let node = this._root;
+    while (node.left) {
+      node = node.left;
+    }
+
+    return node.value;
     }
   
   
 
   max() {
-    //throw new NotImplementedError('Not implemented');
     if (!this._root) {
-
       return null;
-
     }
 
-    let elem = this._root;
-    while (elem.right) {
-      elem = elem.right;
+    let node = this._root;
+    while (node.right) {
+      node = node.right;
     }
 
-    return elem.value;
+    return node.value;
   }
 
   
