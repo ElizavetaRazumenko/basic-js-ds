@@ -21,10 +21,11 @@ class BinarySearchTree {
   }
 
   root() {
-    return {
-      data: this._root,
-    }
-    //throw new NotImplementedError('Not implemented');
+    return this._root;
+    // return {
+    //   data: this._root,
+    // }
+    // //throw new NotImplementedError('Not implemented');
   }
 
   add(data) {
@@ -46,7 +47,11 @@ class BinarySearchTree {
       if (data > elem.value) {
         elem.right = addNewElement(elem.right, data);
       } return elem;
-
+    }
+    
+    if (this._root) {
+      this._root = data;
+      return new Node(data)
     }
 
     this._root = addNewElement(this._root, data)
