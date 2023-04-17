@@ -26,26 +26,29 @@ class BinarySearchTree {
 
   add(data) {
 
-    this._root = addWithin(this._root, data);
+
+    this._root = addElem(this._root, data);
    
-      function addWithin(node, value) {
-        if (!node) {
-          if (BinarySearchTree._root == null) {
-            BinarySearchTree._root = value;
-          }
-          return new Node(value);
+          function addElem(node, value) {
 
-        }
+            if (!node) {
+              if (BinarySearchTree._root == null) {
+                BinarySearchTree._root = value;
+              }
+              return new Node(value);
 
-        if (node.value === value) {
-          return node;
-        }
+            }
 
-        if (value < node.value) {
-          node.left = addWithin(node.left, value);
-        } else {
-          node.right = addWithin(node.right, value);
-        }
+
+            if (node.value === value) {
+              return node;
+            }
+
+            if (value < node.value) {
+              node.left = addElem(node.left, value);
+            } else {
+              node.right = addElem(node.right, value);
+            }
 
         return node;
       }
@@ -54,56 +57,60 @@ class BinarySearchTree {
 
 
   has(value) {
-    return searchWithin(this._root, value);
+    return searchElem(this._root, value);
 
-    function searchWithin(node, value) {
-      if (!node) {
-        return false;
-      }
+          function searchElem(node, value) {
 
-      if (node.value === value) {
-        return true;
-      }
+            if (!node) {
 
-      return value < node.value ? 
-        searchWithin(node.left, value) : 
-        searchWithin(node.right, value);
-    }
+              return false;
+            }
+
+            if (node.value === value) {
+              return true;
+            }
+
+            return value < node.value ? 
+            searchElem(node.left, value) : 
+            searchElem(node.right, value);
+          }
 
   }
 
 
   find(value) {
-    return searchWithin(this._root, value);
+        return findElem(this._root, value);
 
-    function searchWithin(node, value) {
-      if (!node) {
-        return false;
-      }
+        function findElem(node, value) {
 
-      if (node.value === value) {
-        return node.value;
-      }
+          if (!node) {
+            return false;
+          }
 
-      return value < node.value ? 
-        searchWithin(node.left, value) : 
-        searchWithin(node.right, value);
-    }
+
+          if (node.value === value) {
+            return node.value;
+          }
+
+        return value < node.value ? 
+        findElem(node.left, value) : 
+        findElem(node.right, value);
+        }
   }
 
   remove(value) {
-    this.root = removeNode(this._root, value);
+    this.root = removeElem(this._root, value);
 
-      function removeNode(node, value) {
+      function removeElem(node, value) {
         if (!node) {
           return null;
         }
 
         if (value < node.value) {
-          node.left = removeNode(node.left, value);
+          node.left = removeElem(node.left, value);
           return node;
         } else if (node.value < value) {
-          node.right = removeNode(node.right, value);
+          node.right = removeElem(node.right, value);
           return node;
         } else {
           // equal
@@ -127,7 +134,7 @@ class BinarySearchTree {
           }
           node.value = minFromRight.value;
 
-          node.right = removeNode(node.right, minFromRight.value);
+          node.right = removeElem(node.right, minFromRight.value);
 
           return node;
         }
@@ -136,24 +143,29 @@ class BinarySearchTree {
   }
 
   min() {
+
     if (!this._root) {
       return null;
     }
 
-    let node = this._root;
-    while (node.left) {
-      node = node.left;
-    }
+
+      let node = this._root;
+      while (node.left) {
+        node = node.left;
+      }
 
     return node.value;
     }
   
   
 
+
   max() {
+
     if (!this._root) {
       return null;
     }
+
 
     let node = this._root;
     while (node.right) {
